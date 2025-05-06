@@ -1,0 +1,23 @@
+name: ModSecurity Config Check
+
+on:
+  push:
+    paths:
+      - 'modsecurity.conf'
+
+jobs:
+  validate-config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Simulate ModSecurity check
+        run: |
+          echo "🔍 Checking modsecurity.conf..."
+          if grep -q "SecRuleEngine" modsecurity.conf; then
+            echo "✅ Config includes SecRuleEngine"
+          else
+            echo "⚠️ Warning: SecRuleEngine not set"
+          fi
+
